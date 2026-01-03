@@ -16,6 +16,23 @@ class Server:
 
 
 class RoundRobinLoadBalancer:
+    """
+    Implements a round robin load balancer. Round robin load balancing is the
+    simplest variant of static load balancing: given a set of servers, it cycles
+    over each one one request at a time.
+
+    Pros:
+    - Extremely simple to implement and reason about
+    - Distributes requests evenly across all servers
+    - Statelessness implementation
+
+    Cons:
+    - Doesn't consider servers with different capacities, processing power, etc.
+    - Doesn't consider the current server state (e.g., health)
+    - Doesn't support sticky connections (due to its statelessness)
+    - Risks convoy effects where multiple expensive requests are forwarded to
+      multiple servers, causing bottlenecks on all of them
+    """
 
     def __init__(self, num_servers: int = 0):
         if not num_servers:
@@ -24,9 +41,6 @@ class RoundRobinLoadBalancer:
         self.counter = 0
 
     """
-    forward_request returns the the server the request was routed to. If the
-    target server is at capacity, forward_request returns -1.
-
     The fundamental limitation of static routing algorithms such as round robin
     is that they are (without modifications) blissfully unaware of actual server
     state. In this case, this means that the request will be routed to the
@@ -40,6 +54,17 @@ class RoundRobinLoadBalancer:
 
 
 class WeightedRoundRobinLoadBalancer:
+    """
+    Implements a weighted round robin load balancer. Weight round robin load
+    balancing assigns weights to each server and prioritizes servers with higher
+    weights. These weights can include properties such as CPU processing power.
+
+    Weight round robin load balancing presents an improvement over simple round
+    robin forwarding in that it factors in heterogeneity in server configuration
+    during routing. However, it is also stateless (which has both pros and cons)
+    and faces the same drawback of any static load balancing algorithm, which is
+    that it doesn't consider the live state of a server.
+    """
 
     def __init__(self, num_servers: int = 0):
         if not num_servers:
@@ -55,8 +80,6 @@ class WeightedRoundRobinLoadBalancer:
         self.seen_count_for_server = [0 for _ in range(num_servers)]
 
     """
-    forward_request forwards a request to a server, returning the server.
-
     TODO: The current implementation is naive as it forwards all requests to a
     single server before it runs out of "space." We should implement the
     interleaved approach in order to smooth out request forwarding amongst
