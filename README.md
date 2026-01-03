@@ -1,4 +1,4 @@
-### laod-balancer
+### load-balancer
 
 This repository houses (soon to be) a bunch of implementations of fairly popular
 load balancing algorithms, primarily as a way for me to learn about them.
