@@ -24,17 +24,14 @@ class RoundRobinLoadBalancer:
     handle_request returns the the server the request was routed to. If the
     target server is at capacity, handle_request returns -1.
 
-    The fundamental limitation of the round robin algorithm is that it's unaware
-    of a running server's state. This handle_request implementation returns -1
-    as a way to indicate that the targeted server is overloaded but in practice,
-    requests are blindly forwarded to the "next" server regardless of its load
-    and capacity.
+    The fundamental limitation of static routing algorithms such as round robin
+    is that they are (without modifications) blissfully unaware of actual server
+    state. In this case, this means that the request will be routed to the
+    "next" server regardless of whether the server is overloaded or not.
     """
     def handle_request(self) -> Server:
         target = self.counter % len(self.servers)
         self.counter += 1
-        if self.servers[target].load == self.servers[target].capacity:
-            return -1
         self.servers[target].load += 1
         return self.servers[target]
 
