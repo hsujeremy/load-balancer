@@ -2,7 +2,7 @@ DEFAULT_NUM_SERVERS = 5
 
 
 class RoundRobinLoadBalancer:
-    
+
     def __init__(self, num_servers: int = 0):
         if not num_servers:
             num_servers = DEFAULT_NUM_SERVERS
