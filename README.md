@@ -20,5 +20,6 @@ Routing 10 requests...
 ```
 
 Moving forward, I'm thinking of simulating more complex scenarios, such as
-implementing some semblance of server health checks (for the more health-aware
-algorithms) as well as modeling load balancing requests over time.
+implementing some semblance of server health checks as well as modeling load
+balancing requests over time. These will allow me to more easily implement and
+demonstrate correctness of dynamic load balancing algorithms.
